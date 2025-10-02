@@ -66,46 +66,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Contact Form Handling
-const contactForm = document.getElementById('contact-form');
-
-contactForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    const submitButton = contactForm.querySelector('button[type="submit"]');
-    const originalText = submitButton.textContent;
-    
-    // Show loading state
-    submitButton.innerHTML = '<span class="loading"></span> Sending...';
-    submitButton.disabled = true;
-    
-    // Get form data
-    const formData = new FormData(contactForm);
-    const data = {
-        name: formData.get('name'),
-        email: formData.get('email'),
-        phone: formData.get('phone'),
-        date: formData.get('date'),
-        message: formData.get('message')
-    };
-    
-    try {
-        // Simulate form submission (replace with actual endpoint)
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        
-        // Show success message
-        showNotification('Thank you for your message! We will get back to you soon.', 'success');
-        contactForm.reset();
-        
-    } catch (error) {
-        // Show error message
-        showNotification('Sorry, there was an error sending your message. Please try again or call us directly.', 'error');
-    } finally {
-        // Reset button
-        submitButton.textContent = originalText;
-        submitButton.disabled = false;
-    }
-});
 
 // Notification system
 function showNotification(message, type = 'info') {
