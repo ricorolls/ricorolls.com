@@ -272,7 +272,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if (dropoffRow) dropoffRow.classList.add('hidden');
             if (dropoffInput) dropoffInput.removeAttribute('required');
 
-            if (airportFieldset) airportFieldset.classList.remove('hidden');
+            if (airportFieldset) {
+                airportFieldset.classList.remove('hidden');
+                // ensure return/terminal fields are required for airport bookings
+                const returnDate = document.getElementById('return-date');
+                if (returnDate) returnDate.setAttribute('required', '');
+            }
             if (terminalSelect) terminalSelect.setAttribute('required', '');
         } else {
             // Other selected: show dropoff, hide airport fieldset
@@ -282,7 +287,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if (airportFieldset) {
                 airportFieldset.classList.add('hidden');
                 // clear any inputs inside the airport fieldset (departing/return flight numbers, etc.)
-                airportFieldset.querySelectorAll('input').forEach(i => i.value = '');
+                airportFieldset.querySelectorAll('input').forEach(i => {
+                    i.value = '';
+                    i.removeAttribute('required');
+                });
+                // also clear/disable select required state
+                const returnDate = document.getElementById('return-date');
+                if (returnDate) returnDate.removeAttribute('required');
             }
             if (terminalSelect) terminalSelect.removeAttribute('required');
         }
