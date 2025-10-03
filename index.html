@@ -82,7 +82,7 @@
     <!-- Fleet Section -->
     <section id="fleet" class="fleet">
         <div class="container">
-            <h2>Our Fleet</h2>
+            <h2>Our Fleet &amp; Drivers</h2>
             <p class="section-subtitle">Clean, well-maintained vehicles with professional drivers</p>
             <div class="fleet-grid">
                 <div class="fleet-item">
@@ -91,102 +91,18 @@
                     <p>Luxury SUV with premium comfort and style</p>
                 </div>
                 <div class="fleet-item">
-                    <img src="img/Brian_suburban.jpg" alt="Chevrolet Suburban" loading="lazy">
+                    <img src="img/drivers/Brian.jpg" alt="Chevrolet Suburban" loading="lazy">
                     <h3>Chevrolet Suburban</h3>
                     <p>Spacious and comfortable for larger groups</p>
                 </div>
                 <div class="fleet-item">
-                    <img src="img/chevy_suv.jpg" alt="Chevrolet SUV" loading="lazy">
+                    <img src="img/drivers/chevy_suv.jpg" alt="Chevrolet SUV" loading="lazy">
                     <h3>Chevrolet SUV</h3>
                     <p>Reliable and efficient transportation</p>
                 </div>
             </div>
         </div>
     </section>
-
-    <!-- Photo Gallery Section -->
-    <section class="photo-gallery">
-        <div class="container">
-            <h2>Our Fleet & Team</h2>
-            <p class="section-subtitle">Professional vehicles and experienced drivers at your service</p>
-            
-            <div class="carousel-container">
-                <div class="carousel-wrapper">
-                    <div class="carousel-track" id="carousel-track">
-                        <div class="carousel-slide">
-                            <img src="img/2024_cadillac_XT6.jpg" alt="2024 Cadillac XT6" loading="lazy">
-                            <div class="slide-caption">
-                                <h3>2024 Cadillac XT6</h3>
-                                <p>Luxury SUV with premium comfort and style</p>
-                            </div>
-                        </div>
-                        <div class="carousel-slide">
-                            <img src="img/Brian_suburban.jpg" alt="Chevrolet Suburban" loading="lazy">
-                            <div class="slide-caption">
-                                <h3>Chevrolet Suburban</h3>
-                                <p>Spacious and comfortable for larger groups</p>
-                            </div>
-                        </div>
-                        <div class="carousel-slide">
-                            <img src="img/chevy_suv.jpg" alt="Chevrolet SUV" loading="lazy">
-                            <div class="slide-caption">
-                                <h3>Chevrolet SUV</h3>
-                                <p>Reliable and efficient transportation</p>
-                            </div>
-                        </div>
-                        <div class="carousel-slide">
-                            <img src="img/cars_drivers.jpg" alt="Professional Drivers" loading="lazy">
-                            <div class="slide-caption">
-                                <h3>Professional Drivers</h3>
-                                <p>Experienced, knowledgeable, and courteous</p>
-                            </div>
-                        </div>
-                        <div class="carousel-slide">
-                            <img src="img/cars_only.jpg" alt="Fleet Vehicles" loading="lazy">
-                            <div class="slide-caption">
-                                <h3>Fleet Vehicles</h3>
-                                <p>Clean, well-maintained, and ready to serve</p>
-                            </div>
-                        </div>
-                        <div class="carousel-slide">
-                            <img src="img/john_simon.jpg" alt="Rico Rolls Team" loading="lazy">
-                            <div class="slide-caption">
-                                <h3>Rico Rolls Team</h3>
-                                <p>Dedicated to providing exceptional service</p>
-                            </div>
-                        </div>
-                        <div class="carousel-slide">
-                            <img src="img/IMG_8521.jpg" alt="Service Excellence" loading="lazy">
-                            <div class="slide-caption">
-                                <h3>Service Excellence</h3>
-                                <p>Committed to your comfort and safety</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Carousel Controls -->
-                <button class="carousel-btn carousel-prev" id="carousel-prev">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                <button class="carousel-btn carousel-next" id="carousel-next">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
-                
-                <!-- Carousel Indicators -->
-                <div class="carousel-indicators" id="carousel-indicators">
-                    <span class="indicator active" data-slide="0"></span>
-                    <span class="indicator" data-slide="1"></span>
-                    <span class="indicator" data-slide="2"></span>
-                    <span class="indicator" data-slide="3"></span>
-                    <span class="indicator" data-slide="4"></span>
-                    <span class="indicator" data-slide="5"></span>
-                    <span class="indicator" data-slide="6"></span>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- Coverage Area Section -->
     <section id="coverage" class="coverage">
         <div class="container">
@@ -422,14 +338,25 @@
                         </div>
                     </div>
                 </div>
-                <form class="form-group" method="post" data-netlify="true">
-      <fieldset>
-        <label for="first-name">Enter Your First Name: <input id="first-name" name="first-name" type="text" required /></label>
-        <label for="last-name">Enter Your Last Name: <input id="last-name" name="last-name" type="text" required /></label>
-        <label for="email">Enter Your Email: <input id="email" name="email" type="email" required /></label>
-      </fieldset>
-      <input type="submit" value="Submit" />
-      </form>
+                                <form name="contact" class="form-group" method="post" data-netlify="true" data-netlify-honeypot="bot-field">
+            <!-- Required for Netlify forms: form-name hidden input -->
+            <input type="hidden" name="form-name" value="contact" />
+            <!-- Honeypot field to reduce spam (hidden from users) -->
+            <p style="display:none">
+                <label>Don't fill this out if you're human: <input name="bot-field" /></label>
+            </p>
+            <fieldset>
+                <label for="first-name">Enter Your First Name: <input id="first-name" name="first-name" type="text" required /></label>
+                <label for="last-name">Enter Your Last Name: <input id="last-name" name="last-name" type="text" required /></label>
+            <label for="phone">Phone: <input id="phone" name="phone" type="tel" pattern="[0-9\-\+\s\(\)]{7,}" required /></label>
+            <label for="email">Enter Your Email: <input id="email" name="email" type="email" required /></label>
+            <label for="pickup-date">Pickup Date: <input id="pickup-date" name="pickup-date" type="date" required /></label>
+            <label for="pickup-address">Pickup Address: <input id="pickup-address" name="pickup-address" type="text" required /></label>
+            <label for="dropoff-address">Drop-off Address: <input id="dropoff-address" name="dropoff-address" type="text" required /></label>
+            <label for="flight-number">Flight Number (optional): <input id="flight-number" name="flight-number" type="text" placeholder="e.g., DL1234" /></label>
+            </fieldset>
+            <input type="submit" value="Submit" />
+            </form>
             </div>
         </div>
     </section>
@@ -458,11 +385,13 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2024 Rico Rolls. All rights reserved.</p>
+                <p>&copy; 2025 Rico Rolls. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
+    <!-- Google Maps Places API - replace YOUR_API_KEY with your API key -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC_-aj5-WmPBtJHqLDC6XBJw8lBAMDlF9A&libraries=places" defer></script>
     <script src="script.js"></script>
 </body>
 </html>

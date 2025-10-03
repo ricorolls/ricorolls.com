@@ -285,6 +285,70 @@ function loadGoogleReviews() {
     // });
 }
 
+// Initialize Google Places Autocomplete for pickup and dropoff address fields
+function initializePlacePickers() {
+    if (!window.google || !google.maps || !google.maps.places) {
+        console.warn('Google Maps JavaScript API not loaded. Place pickers not initialized.');
+        return;
+    }
+
+    const pickupInput = document.getElementById('pickup-address');
+    const dropoffInput = document.getElementById('dropoff-address');
+
+    if (!pickupInput || !dropoffInput) return;
+
+    const options = {
+        // You can restrict by country if you want: componentRestrictions: { country: 'us' }
+        fields: ['formatted_address', 'geometry', 'name'],
+        types: ['address']
+    };
+
+    const pickupAutocomplete = new google.maps.places.Autocomplete(pickupInput, options);
+    const dropoffAutocomplete = new google.maps.places.Autocomplete(dropoffInput, options);
+
+    function attachPlaceChanged(autocomplete, inputPrefix) {
+        autocomplete.addListener('place_changed', () => {
+            const place = autocomplete.getPlace();
+            if (!place.geometry) return;
+
+            // Create or update hidden inputs for lat/lng
+            let latInput = document.getElementById(inputPrefix + '-lat');
+            let lngInput = document.getElementById(inputPrefix + '-lng');
+
+            if (!latInput) {
+                latInput = document.createElement('input');
+                latInput.type = 'hidden';
+                latInput.id = inputPrefix + '-lat';
+                latInput.name = inputPrefix + '-lat';
+                inputPrefix === 'pickup' ? pickupInput.form.appendChild(latInput) : dropoffInput.form.appendChild(latInput);
+            }
+            if (!lngInput) {
+                lngInput = document.createElement('input');
+                lngInput.type = 'hidden';
+                lngInput.id = inputPrefix + '-lng';
+                lngInput.name = inputPrefix + '-lng';
+                inputPrefix === 'pickup' ? pickupInput.form.appendChild(lngInput) : dropoffInput.form.appendChild(lngInput);
+            }
+
+            latInput.value = place.geometry.location.lat();
+            lngInput.value = place.geometry.location.lng();
+        });
+    }
+
+    attachPlaceChanged(pickupAutocomplete, 'pickup');
+    attachPlaceChanged(dropoffAutocomplete, 'dropoff');
+}
+
+// If Maps API is loaded after our script, wait for it and then initialize
+window.initPlacePickers = initializePlacePickers;
+
+// Try to initialize on DOMContentLoaded if API is already present
+document.addEventListener('DOMContentLoaded', () => {
+    if (window.google && google.maps && google.maps.places) {
+        initializePlacePickers();
+    }
+});
+
 // Photo Carousel Functionality
 class PhotoCarousel {
     constructor() {
