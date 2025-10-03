@@ -352,23 +352,23 @@
                 <label>Don't fill this out if you're human: <input name="bot-field" /></label>
             </p>
             <fieldset>
-                <div class="form-row pickup-location-group">
-                    <label class="radio-option"><input type="radio" name="pickup-location" value="Hartsfield-Jackson" required checked /><span>Hartsfield Jackson Municipal Airport</span></label>
-                    <label class="radio-option"><input type="radio" name="pickup-location" value="Other" /><span>Other</span></label>
-                </div>
                 <label for="passenger-name">Passenger Name: <input id="passenger-name" name="passenger-name" type="text" required /></label>
             <label for="phone">Cell Phone: <input id="phone" name="phone" type="tel" pattern="[0-9\-\+\s\(\)]{7,}" required /></label>
             <label for="email">Email: <input id="email" name="email" type="email" required /></label>
 
             <label for="pickup-date">Pickup Date: <input id="pickup-date" name="pickup-date" type="date" required /></label>
             <label for="pickup-address">Pickup Address: <input id="pickup-address" name="pickup-address" type="text" required /></label>
-            <label for="dropoff-address" class="dropoff-row">Drop-off Address: <input id="dropoff-address" name="dropoff-address" type="text" required /></label>
-
+            <div class="form-row trip-type-group">
+                <label class="radio-option"><input type="radio" name="trip-type" value="Hartsfield-Jackson" required checked /><span>Hartsfield Jackson Municipal Airport</span></label>
+                <label class="radio-option"><input type="radio" name="trip-type" value="Other" /><span>Other</span></label>
+            </div>    
+            <!-- Drop-off should appear directly under the trip-type radios; hidden by default -->
+            <label for="dropoff-address" class="dropoff-row hidden">Drop-off Address: <input id="dropoff-address" name="dropoff-address" type="text" /></label>
             <fieldset class="airport-fields">
                 <label for="terminal">Terminal:
                     <select id="terminal" name="terminal" required>
                         <option value="domestic-north">Domestic North</option>
-                        <option value="domestic">Domestic South</option>
+                        <option value="domestic-south">Domestic South</option>
                         <option value="international">International</option>
                     </select>
                 </label>

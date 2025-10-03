@@ -257,14 +257,15 @@ function loadGoogleReviews() {
 
 // Toggle drop-off address visibility when pickup location is an airport
 document.addEventListener('DOMContentLoaded', () => {
-    const pickupRadios = document.querySelectorAll('input[name="pickup-location"]');
+    // radios are named `trip-type` in the current markup
+    const pickupRadios = document.querySelectorAll('input[name="trip-type"]');
     const dropoffRow = document.querySelector('.dropoff-row');
     const dropoffInput = document.getElementById('dropoff-address');
     const airportFieldset = document.querySelector('.airport-fields');
     const terminalSelect = document.getElementById('terminal');
 
     function updateDropoff() {
-        const selected = document.querySelector('input[name="pickup-location"]:checked');
+        const selected = document.querySelector('input[name="trip-type"]:checked');
         if (!selected) return;
         if (selected.value === 'Hartsfield-Jackson') {
             // Airport selected: hide dropoff, show airport fieldset (terminal + flight)
@@ -280,9 +281,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (airportFieldset) {
                 airportFieldset.classList.add('hidden');
-                // clear flight number when hiding
-                const flightInput = document.getElementById('flight-number');
-                if (flightInput) flightInput.value = '';
+                // clear any inputs inside the airport fieldset (departing/return flight numbers, etc.)
+                airportFieldset.querySelectorAll('input').forEach(i => i.value = '');
             }
             if (terminalSelect) terminalSelect.removeAttribute('required');
         }
