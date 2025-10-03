@@ -347,6 +347,53 @@ document.addEventListener('DOMContentLoaded', () => {
 
 });
 
+// Phone number auto-formatting (US-friendly, preserves extra leading digits as country code)
+function formatPhoneValue(raw) {
+    if (!raw) return '';
+    const trimmed = String(raw).trim();
+    const leadingPlus = trimmed.startsWith('+');
+    const digits = trimmed.replace(/\D/g, '');
+
+    if (digits.length === 0) return '';
+
+    // If more than 10 digits, treat leading digits as country code/prefix
+    if (digits.length > 10) {
+        const cc = digits.slice(0, digits.length - 10);
+        const local = digits.slice(-10);
+        return (leadingPlus ? '+' : '+') + cc + ' (' + local.slice(0,3) + ') ' + local.slice(3,6) + '-' + local.slice(6);
+    }
+
+    // Format up to 10 digits as (XXX) XXX-XXXX progressively
+    if (digits.length <= 3) return '(' + digits;
+    if (digits.length <= 6) return '(' + digits.slice(0,3) + ') ' + digits.slice(3);
+    return '(' + digits.slice(0,3) + ') ' + digits.slice(3,6) + '-' + digits.slice(6);
+}
+
+function attachPhoneFormatting() {
+    const phone = document.getElementById('phone');
+    if (!phone) return;
+
+    function applyAndMoveToEnd(el, value) {
+        el.value = value;
+        // move caret to end for simplicity
+        try { el.setSelectionRange(el.value.length, el.value.length); } catch (e) { /* ignore */ }
+    }
+
+    phone.addEventListener('input', (e) => {
+        const formatted = formatPhoneValue(e.target.value);
+        applyAndMoveToEnd(e.target, formatted);
+    });
+
+    // Final formatting on blur
+    phone.addEventListener('blur', (e) => {
+        const formatted = formatPhoneValue(e.target.value);
+        e.target.value = formatted;
+    });
+}
+
+// Attach formatting after DOM is ready
+document.addEventListener('DOMContentLoaded', attachPhoneFormatting);
+
 // Service Worker registration (for future PWA features)
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {

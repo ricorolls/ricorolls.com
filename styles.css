@@ -456,6 +456,14 @@ input[aria-owns] + div {
     font-weight: 600;
 }
 
+.input-hint {
+    display: block;
+    font-size: 0.85rem;
+    color: #666;
+    margin-top: 0.25rem;
+    margin-bottom: 0.5rem;
+}
+
 .contact .form-group input[type="text"],
 .contact .form-group input[type="email"],
 .contact .form-group input[type="tel"],

@@ -353,7 +353,8 @@
             </p>
             <fieldset>
                 <label for="passenger-name">Passenger Name: <input id="passenger-name" name="passenger-name" type="text" required /></label>
-            <label for="phone">Cell Phone: <input id="phone" name="phone" type="tel" pattern="[0-9\-\+\s\(\)]{7,}" required /></label>
+            <label for="phone">Cell Phone: <input id="phone" name="phone" type="tel" pattern="[0-9\-\+\s\(\)]{7,}" placeholder="(404) 438-7255" aria-describedby="phone-hint" required /></label>
+            <small id="phone-hint" class="input-hint"></small>
             <label for="email">Email: <input id="email" name="email" type="email" required /></label>
 
             <label for="pickup-date">Pickup Date: <input id="pickup-date" name="pickup-date" type="date" required /></label>
