@@ -174,39 +174,8 @@ function removeHighlighting() {
     });
 }
 
-// Add hover effects to service areas
-document.querySelectorAll('.area-group li').forEach(li => {
-    li.addEventListener('mouseenter', () => {
-        li.style.background = '#e3f2fd';
-        li.style.padding = '0.5rem';
-        li.style.borderRadius = '4px';
-        li.style.cursor = 'pointer';
-    });
-    
-    li.addEventListener('mouseleave', () => {
-        li.style.background = '';
-        li.style.padding = '0.5rem 0';
-        li.style.borderRadius = '';
-    });
-});
 
-// Counter animation for statistics (if you want to add them later)
-function animateCounter(element, target, duration = 2000) {
-    let start = 0;
-    const increment = target / (duration / 16);
-    
-    function updateCounter() {
-        start += increment;
-        if (start < target) {
-            element.textContent = Math.floor(start);
-            requestAnimationFrame(updateCounter);
-        } else {
-            element.textContent = target;
-        }
-    }
-    
-    updateCounter();
-}
+
 
 // Parallax effect for hero section
 window.addEventListener('scroll', () => {
@@ -285,201 +254,44 @@ function loadGoogleReviews() {
     // });
 }
 
-// Initialize Google Places Autocomplete for pickup and dropoff address fields
-function initializePlacePickers() {
-    if (!window.google || !google.maps || !google.maps.places || !google.maps.places.PlaceAutocompleteElement) {
-        console.error('PlaceAutocompleteElement is not available in this Maps JS version or for this account. Place pickers will not be initialized.');
-        return;
-    }
 
-    const pickupInput = document.getElementById('pickup-address');
+// Toggle drop-off address visibility when pickup location is an airport
+document.addEventListener('DOMContentLoaded', () => {
+    const pickupRadios = document.querySelectorAll('input[name="pickup-location"]');
+    const dropoffRow = document.querySelector('.dropoff-row');
     const dropoffInput = document.getElementById('dropoff-address');
-    if (!pickupInput || !dropoffInput) return;
+    const airportFieldset = document.querySelector('.airport-fields');
+    const terminalSelect = document.getElementById('terminal');
 
-    const fields = ['formatted_address', 'geometry', 'name'];
+    function updateDropoff() {
+        const selected = document.querySelector('input[name="pickup-location"]:checked');
+        if (!selected) return;
+        if (selected.value === 'Hartsfield-Jackson') {
+            // Airport selected: hide dropoff, show airport fieldset (terminal + flight)
+            if (dropoffRow) dropoffRow.classList.add('hidden');
+            if (dropoffInput) dropoffInput.removeAttribute('required');
 
-    // Helper to create/update hidden lat/lng inputs
-    function setLatLngInputs(formEl, prefix, lat, lng) {
-        if (!formEl) return;
-        let latInput = formEl.querySelector(`#${prefix}-lat`);
-        let lngInput = formEl.querySelector(`#${prefix}-lng`);
-        if (!latInput) {
-            latInput = document.createElement('input');
-            latInput.type = 'hidden';
-            latInput.id = `${prefix}-lat`;
-            latInput.name = `${prefix}-lat`;
-            formEl.appendChild(latInput);
-        }
-        if (!lngInput) {
-            lngInput = document.createElement('input');
-            lngInput.type = 'hidden';
-            lngInput.id = `${prefix}-lng`;
-            lngInput.name = `${prefix}-lng`;
-            formEl.appendChild(lngInput);
-        }
-        latInput.value = lat;
-        lngInput.value = lng;
-    }
+            if (airportFieldset) airportFieldset.classList.remove('hidden');
+            if (terminalSelect) terminalSelect.setAttribute('required', '');
+        } else {
+            // Other selected: show dropoff, hide airport fieldset
+            if (dropoffRow) dropoffRow.classList.remove('hidden');
+            if (dropoffInput) dropoffInput.setAttribute('required', '');
 
-    try {
-        const pickupWidget = new google.maps.places.PlaceAutocompleteElement({ input: pickupInput, fields });
-        const dropoffWidget = new google.maps.places.PlaceAutocompleteElement({ input: dropoffInput, fields });
-
-        const attach = (widget, inputElem, prefix) => {
-            if (typeof widget.addListener === 'function') {
-                widget.addListener('place_changed', () => {
-                    const place = typeof widget.getPlace === 'function' ? widget.getPlace() : widget.place;
-                    if (!place || !place.geometry) return;
-                    setLatLngInputs(inputElem.form, prefix, place.geometry.location.lat(), place.geometry.location.lng());
-                });
-            } else if (typeof widget.addEventListener === 'function') {
-                widget.addEventListener('place_changed', () => {
-                    const place = widget.place;
-                    if (!place || !place.geometry) return;
-                    setLatLngInputs(inputElem.form, prefix, place.geometry.location.lat(), place.geometry.location.lng());
-                });
-            } else {
-                console.warn('PlaceAutocompleteElement does not expose addListener/addEventListener on this platform.');
+            if (airportFieldset) {
+                airportFieldset.classList.add('hidden');
+                // clear flight number when hiding
+                const flightInput = document.getElementById('flight-number');
+                if (flightInput) flightInput.value = '';
             }
-        };
+            if (terminalSelect) terminalSelect.removeAttribute('required');
+        }
+    }
 
-        attach(pickupWidget, pickupInput, 'pickup');
-        attach(dropoffWidget, dropoffInput, 'dropoff');
-    } catch (err) {
-        console.error('Failed to initialize PlaceAutocompleteElement:', err);
-    }
-}
-
-// Expose initializer for Maps callback
-window.initPlacePickers = initializePlacePickers;
-
-// Photo Carousel Functionality
-class PhotoCarousel {
-    constructor() {
-        this.currentSlide = 0;
-        this.totalSlides = 7;
-        this.carouselTrack = document.getElementById('carousel-track');
-        this.prevBtn = document.getElementById('carousel-prev');
-        this.nextBtn = document.getElementById('carousel-next');
-        this.indicators = document.querySelectorAll('.indicator');
-        this.autoPlayInterval = null;
-        this.autoPlayDelay = 5000; // 5 seconds
-        
-        this.init();
-    }
-    
-    init() {
-        if (!this.carouselTrack) return;
-        
-        this.bindEvents();
-        this.updateCarousel();
-        this.startAutoPlay();
-    }
-    
-    bindEvents() {
-        // Previous button
-        if (this.prevBtn) {
-            this.prevBtn.addEventListener('click', () => this.prevSlide());
-        }
-        
-        // Next button
-        if (this.nextBtn) {
-            this.nextBtn.addEventListener('click', () => this.nextSlide());
-        }
-        
-        // Indicators
-        this.indicators.forEach((indicator, index) => {
-            indicator.addEventListener('click', () => this.goToSlide(index));
-        });
-        
-        // Keyboard navigation
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowLeft') this.prevSlide();
-            if (e.key === 'ArrowRight') this.nextSlide();
-        });
-        
-        // Touch/swipe support
-        this.addTouchSupport();
-        
-        // Pause auto-play on hover
-        const carouselContainer = document.querySelector('.carousel-container');
-        if (carouselContainer) {
-            carouselContainer.addEventListener('mouseenter', () => this.stopAutoPlay());
-            carouselContainer.addEventListener('mouseleave', () => this.startAutoPlay());
-        }
-    }
-    
-    addTouchSupport() {
-        let startX = 0;
-        let endX = 0;
-        const carouselWrapper = document.querySelector('.carousel-wrapper');
-        
-        if (!carouselWrapper) return;
-        
-        carouselWrapper.addEventListener('touchstart', (e) => {
-            startX = e.touches[0].clientX;
-        });
-        
-        carouselWrapper.addEventListener('touchend', (e) => {
-            endX = e.changedTouches[0].clientX;
-            this.handleSwipe(startX, endX);
-        });
-    }
-    
-    handleSwipe(startX, endX) {
-        const threshold = 50;
-        const diff = startX - endX;
-        
-        if (Math.abs(diff) > threshold) {
-            if (diff > 0) {
-                this.nextSlide();
-            } else {
-                this.prevSlide();
-            }
-        }
-    }
-    
-    nextSlide() {
-        this.currentSlide = (this.currentSlide + 1) % this.totalSlides;
-        this.updateCarousel();
-    }
-    
-    prevSlide() {
-        this.currentSlide = (this.currentSlide - 1 + this.totalSlides) % this.totalSlides;
-        this.updateCarousel();
-    }
-    
-    goToSlide(slideIndex) {
-        this.currentSlide = slideIndex;
-        this.updateCarousel();
-    }
-    
-    updateCarousel() {
-        if (!this.carouselTrack) return;
-        
-        const translateX = -this.currentSlide * (100 / this.totalSlides);
-        this.carouselTrack.style.transform = `translateX(${translateX}%)`;
-        
-        // Update indicators
-        this.indicators.forEach((indicator, index) => {
-            indicator.classList.toggle('active', index === this.currentSlide);
-        });
-    }
-    
-    startAutoPlay() {
-        this.stopAutoPlay();
-        this.autoPlayInterval = setInterval(() => {
-            this.nextSlide();
-        }, this.autoPlayDelay);
-    }
-    
-    stopAutoPlay() {
-        if (this.autoPlayInterval) {
-            clearInterval(this.autoPlayInterval);
-            this.autoPlayInterval = null;
-        }
-    }
-}
+    pickupRadios.forEach(r => r.addEventListener('change', updateDropoff));
+    // initialize state
+    updateDropoff();
+});
 
 // Initialize everything when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
@@ -494,9 +306,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Initialize Google Reviews
     loadGoogleReviews();
-    
-    // Initialize Photo Carousel
-    new PhotoCarousel();
+
 });
 
 // Service Worker registration (for future PWA features)
