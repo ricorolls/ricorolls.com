@@ -255,53 +255,80 @@ function loadGoogleReviews() {
 }
 
 
-// Toggle drop-off address visibility when pickup location is an airport
+// Toggle between airport fields and drop-off by inserting/removing DOM nodes
 document.addEventListener('DOMContentLoaded', () => {
-    // radios are named `trip-type` in the current markup
     const pickupRadios = document.querySelectorAll('input[name="trip-type"]');
-    const dropoffRow = document.querySelector('.dropoff-row');
-    const dropoffInput = document.getElementById('dropoff-address');
-    const airportFieldset = document.querySelector('.airport-fields');
-    const terminalSelect = document.getElementById('terminal');
+    const tripTypeGroup = document.querySelector('.trip-type-group');
 
-    function updateDropoff() {
-        const selected = document.querySelector('input[name="trip-type"]:checked');
-        if (!selected) return;
-        if (selected.value === 'Hartsfield-Jackson') {
-            // Airport selected: hide dropoff, show airport fieldset (terminal + flight)
-            if (dropoffRow) dropoffRow.classList.add('hidden');
-            if (dropoffInput) dropoffInput.removeAttribute('required');
+    // Capture originals as templates and remove them from the DOM so we can insert as needed
+    const originalAirport = document.querySelector('.airport-fields');
+    const originalDropoff = document.querySelector('.dropoff-row');
+    const airportTemplate = originalAirport ? originalAirport.cloneNode(true) : null;
+    const dropoffTemplate = originalDropoff ? originalDropoff.cloneNode(true) : null;
 
-            if (airportFieldset) {
-                airportFieldset.classList.remove('hidden');
-                // ensure return/terminal fields are required for airport bookings
-                const returnDate = document.getElementById('return-date');
-                if (returnDate) returnDate.setAttribute('required', '');
-            }
-            if (terminalSelect) terminalSelect.setAttribute('required', '');
-        } else {
-            // Other selected: show dropoff, hide airport fieldset
-            if (dropoffRow) dropoffRow.classList.remove('hidden');
-            if (dropoffInput) dropoffInput.setAttribute('required', '');
+    if (originalAirport && originalAirport.parentNode) {
+        originalAirport.parentNode.removeChild(originalAirport);
+    }
+    if (originalDropoff && originalDropoff.parentNode) {
+        // remove the dropoff from DOM initially; we'll insert depending on selection
+        originalDropoff.parentNode.removeChild(originalDropoff);
+    }
 
-            if (airportFieldset) {
-                airportFieldset.classList.add('hidden');
-                // clear any inputs inside the airport fieldset (departing/return flight numbers, etc.)
-                airportFieldset.querySelectorAll('input').forEach(i => {
-                    i.value = '';
-                    i.removeAttribute('required');
-                });
-                // also clear/disable select required state
-                const returnDate = document.getElementById('return-date');
-                if (returnDate) returnDate.removeAttribute('required');
-            }
-            if (terminalSelect) terminalSelect.removeAttribute('required');
+    function insertAfter(refNode, newNode) {
+        if (!refNode || !newNode) return;
+        if (refNode.nextSibling) refNode.parentNode.insertBefore(newNode, refNode.nextSibling);
+        else refNode.parentNode.appendChild(newNode);
+    }
+
+    function ensureAirportInserted() {
+        if (!document.querySelector('.airport-fields') && airportTemplate && tripTypeGroup) {
+            const node = airportTemplate.cloneNode(true);
+            insertAfter(tripTypeGroup, node);
         }
     }
 
-    pickupRadios.forEach(r => r.addEventListener('change', updateDropoff));
-    // initialize state
-    updateDropoff();
+    function ensureDropoffInserted() {
+        if (!document.querySelector('.dropoff-row') && dropoffTemplate && tripTypeGroup) {
+            const node = dropoffTemplate.cloneNode(true);
+            // ensure any hidden marker is removed on insertion so it becomes visible
+            node.classList.remove('hidden');
+            insertAfter(tripTypeGroup, node);
+        }
+    }
+
+    function updateFields() {
+        const selected = document.querySelector('input[name="trip-type"]:checked');
+        if (!selected) return;
+
+        if (selected.value === 'Hartsfield-Jackson') {
+            // remove dropoff if present
+            const existingDrop = document.querySelector('.dropoff-row');
+            if (existingDrop && existingDrop.parentNode) existingDrop.parentNode.removeChild(existingDrop);
+
+            // insert airport fields
+            ensureAirportInserted();
+
+            // set required attributes for airport flow
+            const terminal = document.getElementById('terminal');
+            if (terminal) terminal.setAttribute('required', '');
+            const returnDate = document.getElementById('return-date');
+            if (returnDate) returnDate.setAttribute('required', '');
+        } else {
+            // remove airport fields if present
+            const existingAirport = document.querySelector('.airport-fields');
+            if (existingAirport && existingAirport.parentNode) existingAirport.parentNode.removeChild(existingAirport);
+
+            // insert dropoff
+            ensureDropoffInserted();
+            const dropInput = document.getElementById('dropoff-address');
+            if (dropInput) dropInput.setAttribute('required', '');
+        }
+    }
+
+    pickupRadios.forEach(r => r.addEventListener('change', updateFields));
+
+    // initialize on load
+    updateFields();
 });
 
 // Initialize everything when DOM is loaded
