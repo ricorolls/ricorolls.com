@@ -36,9 +36,9 @@
     <section id="home" class="hero">
         <div class="hero-content">
             <h1>Premium Transportation Services</h1>
-            <p>Safe, reliable, and luxurious transportation throughout Cherokee County and North Metro Atlanta</p>
+            <p><strong>Clean, reliable, &amp; on-time transportation</strong> throughout Cherokee County and North Metro Atlanta</p>
             <div class="hero-buttons">
-                <a href="#contact" class="btn btn-primary">Book Now</a>
+                <a href="#contact" class="btn btn-primary">Book Now/Text Today</a>
                 <a href="tel:404-438-7255" class="btn btn-secondary">
                     <i class="fas fa-phone"></i> 404-438-7255
                 </a>
@@ -87,18 +87,13 @@
             <div class="fleet-grid">
                 <div class="fleet-item">
                     <img src="img/drivers/justin.jpg" alt="2024 Cadillac XT6" loading="lazy">
-                    <h3>Justin "Rico" Boria</h3>
+                    <h3>Justin 'Rico' Boria</h3>
                     <p>Smaller SUV with premium comfort &amp; style</p>
                 </div>
                 <div class="fleet-item">
                     <img src="img/drivers/Brian.jpg" alt="Chevrolet Suburban" loading="lazy">
                     <h3>Burhan aka Brian</h3>
                     <p>Spacious &amp; comfortable Chevrolet Suburban for larger groups</p>
-                </div>
-                 <div class="fleet-item">
-                    <img src="img/drivers/lekan.jpg" alt="2024 Cadillac XT6" loading="lazy">
-                    <h3>Lekan</h3>
-                    <p>Luxury SUV with premium comfort &amp; style</p>
                 </div>
                 <div class="fleet-item">
                     <img src="img/drivers/john.jpg" alt="2024 Cadillac XT6" loading="lazy">
@@ -114,6 +109,11 @@
                     <img src="img/drivers/abdel.jpg" alt="2024 Cadillac XT6" loading="lazy">
                     <h3>Abdel</h3>
                     <p>Our premium 7-seat Suburban featuring additional space, style, and comfort</p>
+                </div>
+                <div class="fleet-item">
+                    <img src="img/drivers/lekan.jpg" alt="2024 Cadillac XT6" loading="lazy">
+                    <h3>Lekan</h3>
+                    <p>Luxury SUV with premium comfort &amp; style</p>
                 </div>
             </div>
         </div>
@@ -139,8 +139,11 @@
                         <div class="area-group">
                             <h4>Cherokee County</h4>
                             <ul>
+                                <li>Acworth</li>
                                 <li>Ball Ground</li>
                                 <li>Canton</li>
+                                <li>Marietta</li>
+                                <li>Kennesaw</li>
                                 <li>Waleska</li>
                                 <li>Woodstock</li>
                             </ul>
@@ -148,7 +151,6 @@
                         <div class="area-group">
                             <h4>Expanding Areas</h4>
                             <ul>
-                                 <li>Acworth</li>
                                 <li>Alpharetta</li>
                                 <li>Cumming</li>
                                 <li>Milton</li>
@@ -179,7 +181,7 @@
             <div class="about-content">
                 <div class="about-text">
                     <h2>About Rico Rolls</h2>
-                    <p>My name is Justin and I am the proud owner of Rico Rolls, a transportation business located in Cherokee County, GA. We specialize in providing reliable, safe, and cost-effective transportation solutions for both individuals and business owners.</p>
+                    <p>My name is Justin 'Rico' Boria and I am the proud owner of Rico Rolls, a transportation business located in Cherokee County, GA. We specialize in providing reliable, safe, and cost-effective transportation solutions for both individuals and business owners.</p>
                     <p>With 6 professional drivers and a fleet of well-maintained vehicles, we serve North Metro Atlanta from Cumming to Acworth, Ball Ground, Waleska, and all points in between. We're expanding our services to include Alpharetta, Milton, and Roswell.</p>
                     <div class="about-features">
                         <div class="feature">
@@ -195,7 +197,7 @@
                             <div class="feature-body">
                                 <span>Flexible Payment Options</span>
                                 <div class="payment-info">
-                                    <div class="payment-methods">Venmo &nbsp;|&nbsp; Cash &nbsp;|&nbsp; Credit Card*</div>
+                                    <div class="payment-methods">Zelle &nbsp;|&nbsp; Venmo &nbsp;|&nbsp; Cash &nbsp;|&nbsp; Credit Card*</div>
                                     <div class="payment-note"><em>An Additional fee applies for credit card payments. <br/>Gratuity is greatly appreciated!</em></div>
                                 </div>
                             </div>
@@ -373,10 +375,26 @@
                         <option value="international">International</option>
                     </select>
                 </label>
-                <label for="departing-flight-number" class="flight-row">Departing Flight Number (optional): <input id="departing-flight-number" name="departing-flight-number" type="text" placeholder="e.g., DL1234" /></label>
+
+                <div class="flight-block">
+                    <label for="departing-flight-number" class="flight-row">Departing Flight Number:
+                        <input id="departing-flight-number" name="departing-flight-number" type="text" placeholder="e.g., DL1234" required/>
+                    </label>
+                    <label for="departing-departure-time" class="flight-row">Departure Time:
+                        <input id="departing-departure-time" name="departing-departure-time" type="time" required />
+                    </label>
+                </div>
+
                 <label for="return-date">Return Date: <input id="return-date" name="return-date" type="date" required /></label>
-                </label>
-                <label for="returing-flight-number" class="flight-row">Returning Flight Number (optional): <input id="returing-flight-number" name="returing-flight-number" type="text" placeholder="e.g., DL1234" /></label>
+
+                <div class="flight-block">
+                    <label for="returing-flight-number" class="flight-row">Returning Flight Number:
+                        <input id="returing-flight-number" name="returing-flight-number" type="text" placeholder="e.g., DL1234" required />
+                    </label>
+                    <label for="returning-arrival-time" class="flight-row">Arrival Time:
+                        <input id="returning-arrival-time" name="returning-arrival-time" type="time" required />
+                    </label>
+                </div>
             </fieldset>
             </fieldset>
             <input type="submit" value="Submit" />

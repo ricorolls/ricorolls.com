@@ -284,6 +284,17 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!document.querySelector('.airport-fields') && airportTemplate && tripTypeGroup) {
             const node = airportTemplate.cloneNode(true);
             insertAfter(tripTypeGroup, node);
+            // after insertion, ensure time inputs are marked required for airport bookings
+            const depTime = document.getElementById('departing-departure-time');
+            const depNum = document.getElementById('departing-flight-number');
+            const retTime = document.getElementById('returning-arrival-time');
+            const retNum = document.getElementById('returing-flight-number');
+            const returnDate = document.getElementById('return-date');
+            if (depTime) depTime.setAttribute('required', '');
+            if (depNum) depNum.setAttribute('required', '');
+            if (retTime) retTime.setAttribute('required', '');
+            if (retNum) retNum.setAttribute('required', '');
+            if (returnDate) returnDate.setAttribute('required', '');
         }
     }
 
@@ -313,10 +324,22 @@ document.addEventListener('DOMContentLoaded', () => {
             if (terminal) terminal.setAttribute('required', '');
             const returnDate = document.getElementById('return-date');
             if (returnDate) returnDate.setAttribute('required', '');
+            // ensure time inputs are required
+            ['departing-departure-time','departing-arrival-time','returning-departure-time','returning-arrival-time'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.setAttribute('required', '');
+            });
         } else {
             // remove airport fields if present
             const existingAirport = document.querySelector('.airport-fields');
-            if (existingAirport && existingAirport.parentNode) existingAirport.parentNode.removeChild(existingAirport);
+            if (existingAirport && existingAirport.parentNode) {
+                // before removing, clear and remove required from time inputs inside
+                existingAirport.querySelectorAll('input').forEach(i => {
+                    i.value = '';
+                    i.removeAttribute('required');
+                });
+                existingAirport.parentNode.removeChild(existingAirport);
+            }
 
             // insert dropoff
             ensureDropoffInserted();
