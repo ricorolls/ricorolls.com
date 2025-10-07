@@ -380,6 +380,9 @@
             <label for="passenger-count"># of Passengers: <input id="passenger-count" name="passenger-count" type="number" value="1" min="1" required /></label>
 
             <label for="pickup-date">Pickup Date: <input id="pickup-date" name="pickup-date" type="date" required /></label>
+             <label for="pickup-time">Pickup Time:
+                        <input id="pickup-time" name="pickup-time" type="time" required />
+                    </label>
             <label for="pickup-address">Pickup Address: <input id="pickup-address" name="pickup-address" type="text" required /></label>
             <div class="form-row trip-type-group">
                 <label class="radio-option"><input type="radio" name="trip-type" value="Hartsfield-Jackson" required checked /><span>Hartsfield Jackson Municipal Airport</span></label>
@@ -390,7 +393,7 @@
             <fieldset class="airport-fields">
                 <label for="terminal">Terminal:
                     <select id="terminal" name="terminal" required>
-                        <option value="" disabled selected>-- Select a Terminal --</option>
+                        <option value="domestic-south">Domestic South</option>
                         <option value="domestic-north">Domestic North</option>
                         <option value="domestic-south">Domestic South</option>
                         <option value="international">International</option>
@@ -412,7 +415,7 @@
                     <label for="returing-flight-number" class="flight-row">Returning Flight #:
                         <input id="returing-flight-number" name="returing-flight-number" type="text" placeholder="e.g., DL1234" required />
                     </label>
-                    <label for="returning-arrival-time" class="flight-row">Arrival Time:
+                    <label for="returning-arrival-time" class="flight-row">Exact Arrival Time:
                         <input id="returning-arrival-time" name="returning-arrival-time" type="time" required />
                     </label>
                 </div>
