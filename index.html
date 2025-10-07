@@ -197,6 +197,7 @@
                             <div class="feature-body">
                                 <span>Flexible Payment Options</span>
                                 <div class="payment-info">
+                                    <span>Payment due at time of service. No deposit required.</span>
                                     <div class="payment-methods">Zelle &nbsp;|&nbsp; Venmo &nbsp;|&nbsp; Cash &nbsp;|&nbsp; Credit Card*</div>
                                     <div class="payment-note"><em>An Additional fee applies for credit card payments. <br/>Gratuity is greatly appreciated!</em></div>
                                 </div>
@@ -387,18 +388,16 @@
             <div class="form-row trip-type-group">
                 <label class="radio-option"><input type="radio" name="trip-type" value="Hartsfield-Jackson" required checked /><span>Hartsfield Jackson Municipal Airport</span></label>
                 <label class="radio-option"><input type="radio" name="trip-type" value="Other" /><span>Other</span></label>
-            </div>    
+            </div>
             <!-- Drop-off should appear directly under the trip-type radios; hidden by default -->
             <label for="dropoff-address" class="dropoff-row hidden">Drop-off Address: <input id="dropoff-address" name="dropoff-address" type="text" /></label>
             <fieldset class="airport-fields">
                 <label for="terminal">Terminal:
-                    <select id="terminal" name="terminal" required>
-                        <option value="domestic-south">Domestic South</option>
-                        <option value="domestic-north">Domestic North</option>
-                        <option value="domestic-south">Domestic South</option>
-                        <option value="international">International</option>
-                    </select>
-                </label>
+                   <div class="form-row terminal-group">
+                <label class="radio-option"><input type="radio" name="terminal" value="domestic-south" required checked /><span>Domestic South</span></label>
+                <label class="radio-option"><input type="radio" name="terminal" value="domestic-north" /><span>Domestic North</span></label>
+                 <label class="radio-option"><input type="radio" name="terminal" value="international" /><span>International</span></label>
+            </div>        
 
                 <div class="flight-block">
                     <label for="departing-flight-number" class="flight-row">Departing Flight #:
