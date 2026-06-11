@@ -320,12 +320,15 @@ body {
 }
 
 .fleet-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 2rem;
 }
 
 .fleet-item {
+    flex: 0 1 320px;
+    min-width: 280px;
     text-align: center;
     background: white;
     border-radius: 15px;
